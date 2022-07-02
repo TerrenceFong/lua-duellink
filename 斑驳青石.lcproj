@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<lcproj projname="斑驳青石" appname="青石" autorotate="false" autorun="0" autorunscript="0" cputype="2" icon="E:\懒人精灵\懒人精灵3.5.8\script\斑驳青石\app图标——2.PNG" is_acc_mode="0" jmpjdcheck="0" localmode="true" pkgname="com.qingshi" rgbmode="false" sel="1" showhome="0" targetsize="1280x720" useocr="0" useoldmenu="0" ver="43">
+    <lua entry="主轴.lua">
+        <file name="系统命令库.lua"/>
+        <file name="决斗链接命令库.lua"/>
+        <file name="参数库.lua"/>
+        <file name="青石UI界面.lua"/>
+        <file name="对接泡椒云.lua"/>
+        <file name="UI命令.lua"/>
+        <file name="puxiu(1).lua"/>
+    </lua>
+    <rc entry="斑驳青石.rc"/>
+    <ui entry="斑驳青石.ui"/>
+    <luae entry="">
+        <file name="x86"/>
+        <file name="armeabi-v7a"/>
+        <file name="TURING.luae"/>
+    </luae>
+</lcproj>
