@@ -53,6 +53,7 @@ function 识别.找色(...) -- 标准: 范围数组,颜色,相似度
 		范围,颜色,相似度 = {t[1],t[2],t[3],t[4]},t[5],t[6]
 	else
 		print("范围找色函数异常 - 1")
+		print(t)
 		异常提示("异常-范围找色函数异常-联系作者")
 	end
 	local 截图 = 截图到内存(范围)
@@ -102,6 +103,7 @@ function 识别.图灵识字(...)	 -- 标准 :范围数组,字库名,白名单文字,二值化变量,相似
 		归一 = true
 	else
 		print("图灵识字函数异常-1")
+		print(temp)
 		异常提示("异常-图灵识字函数-联系作者")
 	end
 	
@@ -113,11 +115,15 @@ function 识别.图灵识字(...)	 -- 标准 :范围数组,字库名,白名单文字,二值化变量,相似
 	end
 	if 文字 == nil then
 		if TURING.字库_加载识别字库(getSdPath() .."/" ..字库 ..".lib") == 0 then
+			print("异常1-字库失效-联系作者")
+			print(temp)
 			异常提示("异常1-字库失效-联系作者")
 			return false
 		end
 	else
 		if TURING.字库_加载识别字库(getSdPath() .."/" ..字库 ..".lib",文字) ==0  then
+			print("异常2-字库失效-联系作者")
+			print(temp)
 			异常提示("异常2-字库失效-联系作者")
 			return false
 		end
@@ -126,13 +132,13 @@ function 识别.图灵识字(...)	 -- 标准 :范围数组,字库名,白名单文字,二值化变量,相似
 	local 结果,结果2
 	if 识别结果 ~= nil and 识别结果 ~= "" then
 		结果 = splitStr(识别结果,"|")
-		for i=1,#结果,2 do
-			结果2 = splitStr(结果[i+1],",")
-			--[===[for j=1,#结果2,2 do
-			print("文字: "..结果[i].." 坐标: " .. 结果2[j]+范围[1]..","..结果2[j+1]+范围[2])
-			end]===]
-		end
-		if 结果2 ~= nil then
+		if 结果 and next(结果) ~= nil then
+			for i=1,#结果,2 do
+				结果2 = splitStr(结果[i+1],",")
+				--[===[for j=1,#结果2,2 do
+				print("文字: "..结果[i].." 坐标: " .. 结果2[j]+范围[1]..","..结果2[j+1]+范围[2])
+				end]===]
+			end
 			识别X = 结果2[1]+范围[1]
 			识别Y = 结果2[2]+范围[2]
 			图灵文字 = 结果[1]
@@ -155,7 +161,7 @@ function 识别.找字(...)  -- 标准:范围,字库名,文字及颜色数组,相似度,点击判断0/1
 		范围={temp[1],temp[2],temp[3],temp[4]}
 		字库名,文字,颜色,相似度,点击判断 = temp[5]..".txt",temp[6][1],temp[6][2],temp[7],temp[8]
 	else
-		print("异常:")
+		print("异常-找字函数-联系作者")
 		print(temp)
 		异常提示("异常-找字函数-联系作者")
 	end
@@ -193,6 +199,8 @@ function 识别.识图(...) -- 标准: 数组范围,图片名,相似度,点击判断0/1
 		点击 = temp[7]
 	else
 		print("异常- 形参类型"..type(temp[1]).." 长度: "..#temp)
+		print("异常-识图函数-联系作者")
+		print(temp)
 		异常提示("异常-识图函数-联系作者")
 	end
 	local 截图 = 截图到内存(范围)
@@ -227,12 +235,15 @@ function 识别.多点找色(...) -- 标准 范围,颜色数组,方向,相似度
 		反向 = temp[6]
 		相似度 = temp[7]
 	else
-    	print(temp)
+    print("异常-函数多点找色-联系作者")
+    print(temp)
 		异常提示("异常-函数多点找色-联系作者")
 	end
 	local 截图 = 截图到内存(范围)
 	local x,y = findMultiColor(范围[1],范围[2],范围[3],范围[4],颜色数组[1],颜色数组[2],方向,相似度)
-    if 截图 then  releaseCapture()end
+  if 截图 then 
+		releaseCapture()
+	end
 	if x > -1 then
 		识别X = x
 		识别Y = y

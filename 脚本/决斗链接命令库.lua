@@ -379,13 +379,13 @@ function 局内检测.怪兽识别(表示,范围序号,敌我) -- 标准: 表示: 攻守 范围序号 敌我
 	{"A99F96","0|7|ABA095|0|15|ADA094|1|21|A8A097|1|28|A8A097|1|35|A8A097|91|35|A69E9E|91|42|A69D9C|92|52|A59D9D|92|60|A79E9E|92|69|A49B9A"},
 	}
 	if 敌我 == "我" then
-		if 识别.多点找色(范围_我怪[范围序号],颜色_我怪[范围序号],0,0.9) == false then
+		if 识别.多点找色(范围_我怪[范围序号],颜色_我怪[范围序号],0,0.8) == false then
 			if 表示 == "攻击" then
-				if 识别.图灵识字(范围.我方攻击怪兽[范围序号],"怪兽识别","攻怪",颜色.怪兽识别,0.9) then
+				if 识别.图灵识字(范围.我方攻击怪兽[范围序号],"怪兽识别","攻怪",颜色.怪兽识别,0.8) then
 					return true
 				end
 			elseif 表示 == "防御" then
-				if 识别.图灵识字(范围.我方防御怪兽[范围序号],"怪兽识别","守怪",颜色.怪兽识别,0.9) then
+				if 识别.图灵识字(范围.我方防御怪兽[范围序号],"怪兽识别","守怪",颜色.怪兽识别,0.8) then
 					return true
 				end
 			elseif 表示 == nil  then
@@ -393,13 +393,13 @@ function 局内检测.怪兽识别(表示,范围序号,敌我) -- 标准: 表示: 攻守 范围序号 敌我
 			end
 		end
 	elseif 敌我 == "敌" then
-		if 识别.多点找色(范围_敌怪[范围序号],颜色_敌怪[范围序号],0,0.9) == false then
+		if 识别.多点找色(范围_敌怪[范围序号],颜色_敌怪[范围序号],0,0.8) == false then
 			if 表示 == "攻击" then
-				if 识别.图灵识字(范围.敌方攻击怪兽[范围序号],"怪兽识别","攻怪",颜色.怪兽识别,0.9) then
+				if 识别.图灵识字(范围.敌方攻击怪兽[范围序号],"怪兽识别","攻怪",颜色.怪兽识别,0.8) then
 					return true
 				end
 			elseif 表示 == "防御" then
-				if 识别.图灵识字(范围.敌方防御怪兽[范围序号],"怪兽识别","守怪",颜色.怪兽识别,0.9) then
+				if 识别.图灵识字(范围.敌方防御怪兽[范围序号],"怪兽识别","守怪",颜色.怪兽识别,0.8) then
 					return true
 				end
 			elseif 表示 == nil  then
@@ -421,14 +421,14 @@ end
 function 局外检测.场景(序号)
 	if 序号 == nil then
 		for i, var in ipairs(范围.场景) do
-			if 识别.图灵识字(var,"场景_150",nil,150,0.9) then
+			if 识别.图灵识字(var,"场景_150",nil,150,0.8) then
 				HUD.提示信息("场景--"..文字.场景[i])
 				return i
 			end
 		end
 		return 0
 	else
-		if 识别.图灵识字(范围.场景[序号],"场景_150",文字.场景[序号],150,0.9) then
+		if 识别.图灵识字(范围.场景[序号],"场景_150",文字.场景[序号],150,0.8) then
 			HUD.提示信息("场景--"..文字.场景[序号])
 			return true
 		end
@@ -442,53 +442,63 @@ function 局外检测.路人()
 	local t = {}
 	if 局外检测.主界面() then
 		t = 范围.路人识别[局外检测.场景(nil)]
+		-- print("t1 局外检测.主界面")
+		-- print(t)
 	else
 		局外操作.返回主界面()
 		t = 范围.路人识别[局外检测.场景(nil)]
+		-- print("t2 局外操作.返回主界面")
+		-- print(t)
 	end
-	for i, var in ipairs(颜色.决斗者) do
-		if 识别.多点找色(t,var,0,0.9) then
-			tap (识别X,识别Y+15)
-			local time = tickCount()
-			while(true)  do
-				if 局外检测.对话() then return true end
-				if tickCount() - time > 10000 then
-					return false
+
+	if t ~= nil then
+		for i, var in ipairs(颜色.决斗者) do
+			-- print("局外检测.路人 颜色.决斗者")
+			if 识别.多点找色(t,var,0,0.9) then
+				tap (识别X,识别Y+15)
+				local time = tickCount()
+				while(true)  do
+					if 局外检测.对话() then return true end
+					if tickCount() - time > 10000 then
+						return false
+					end
+					sleep(1000)
 				end
-				sleep(1000)
 			end
 		end
-	end
-	
-	for i,var in ipairs(颜色.小红帽) do
-		if 识别.多点找色(t,var,0,0.9) then
-			tap (识别X,识别Y+15)
-			local time = tickCount()
-			while(true)  do
-				if 局外检测.对话() then return true end
-				if tickCount() - time > 10000 then
-					return false
+		
+		for i,var in ipairs(颜色.小红帽) do
+			-- print("局外检测.路人 颜色.小红帽")
+			if 识别.多点找色(t,var,0,0.9) then
+				tap (识别X,识别Y+15)
+				local time = tickCount()
+				while(true)  do
+					if 局外检测.对话() then return true end
+					if tickCount() - time > 10000 then
+						return false
+					end
+					sleep(1000)
 				end
-				sleep(1000)
 			end
 		end
-	end
-	
-	for i,var in ipairs(颜色.普通路人) do
-		if 识别.多点找色(t,var,0,0.9) then
-			tap (识别X,识别Y+15)
-			local time = tickCount()
-			while(true)  do
-				if 局外检测.对话() then return true end
-				if tickCount() - time > 10000 then
-					return false
+		
+		for i,var in ipairs(颜色.普通路人) do
+			-- print("局外检测.路人 颜色.普通路人")
+			if 识别.多点找色(t,var,0,0.9) then
+				tap (识别X,识别Y+15)
+				local time = tickCount()
+				while(true)  do
+					if 局外检测.对话() then return true end
+					if tickCount() - time > 10000 then
+						return false
+					end
+					sleep(1000)
 				end
-				sleep(1000)
 			end
 		end
+	else
+		return false
 	end
-	
-	return false
 end
 
 function 局外检测.对话()
@@ -704,7 +714,7 @@ function 结算处理.排名()
 	局外操作.结算_好()
 	
 	if 局内检测.局内() then
-		启动.对局(1)
+		对局.启动(1)
 	end
 	
 	if 局外操作.结算_升级奖励() == false and 局外操作.结算_决斗评价() == false then
@@ -1181,7 +1191,7 @@ function 局内操作.怪兽直接攻击()
 end
 
 function 局内操作.划动_直接攻击(坐标)
-	swipe(坐标[1],坐标[2],坐标[1],坐标[2]-400,50)
+	swipe(坐标[1],坐标[2],坐标[1],坐标[2]-500,80)
 	sleep(延迟.攻击延迟)
 end
 

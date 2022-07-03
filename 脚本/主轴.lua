@@ -1,7 +1,13 @@
 require("决斗链接命令库")
 require("对接泡椒云")
 require("puxiu(1)")
-setStopCallBack(function()
+setStopCallBack(function(error)
+	if error then
+		writeLog("脚本异常结束了!!!")
+		writeLog(error)
+		print(error)
+	end
+
 	writeLog("正常退出脚本-脚本运行结果: 总时间:", math.floor(tickCount()/60000) ," 分钟 " ," 总局数: " , 实况.局数 , " 效率: " , string.format("%.2f",tickCount()/60000/实况.局数) ," 分/局 ", "胜率: " , 实况.胜场/实况.局数*100 ,"%")
 	snapShot("sdcard/青石/正常退出截图.png",0,0,720,1280)
 	if 异常ID ~= nil then
@@ -49,17 +55,22 @@ function  路人()
 			局外操作.使用决斗珠()
 			return
 		end
-		if 局外检测.主界面() and 局外检测.路人()  then
-			
+
+		if 局外检测.主界面() and 局外检测.路人() then
 			if 局外检测.对话() then
 				local time = tickCount()
 				while(true) do
 					HUD.提示信息("路人 - 对话中")
+					if tickCount() - time > 5000 then
+						print("'主界面 - 路人 - 对话中：超过阈值，直接退出循环")
+						break
+					end
 					if 局外检测.路人_自动决斗() then
 						local x,y = 识别X,识别Y
 						局外操作.路人切换奖励()
 						tap (x,y)
 						HUD.提示信息("路人 - 对局")
+						print('主界面 - 路人 - 对话中 - 对局')
 						结算处理.路人()
 						break
 					end
@@ -87,14 +98,16 @@ function  路人()
 			局外操作.主界面翻页()
 			翻页次数 = 翻页次数 + 1
 		end
+
+		-- 兜底处理
 		if 局外检测.路人_自动决斗() then
 			local x,y = 识别X,识别Y
 			局外操作.路人切换奖励()
 			tap (x,y)
 			HUD.提示信息("路人 - 对局")
+			print('路人_自动决斗 - 对局')
 			结算处理.路人()
 		end
-		
 	end
 end
 
@@ -819,6 +832,8 @@ function 异常处理线程()
 			点击 = temp[7]
 		else
 			print("异常- 形参类型"..type(temp[1]).." 长度: "..#temp)
+			print("异常-识图函数-联系作者")
+    	print(temp)
 			异常提示("异常-识图函数-联系作者")
 		end
 		keepCapture()
