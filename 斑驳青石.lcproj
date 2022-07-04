@@ -15,5 +15,6 @@
         <file name="x86"/>
         <file name="armeabi-v7a"/>
         <file name="TURING.luae"/>
+        <file name="DDMControlV2.luae"/>
     </luae>
 </lcproj>

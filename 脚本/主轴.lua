@@ -1,6 +1,21 @@
 require("决斗链接命令库")
 require("对接泡椒云")
 require("puxiu(1)")
+local DDMControl = require("DDMControlV2")
+while true do
+	local 初始化结果 = DDMControl.初始化(
+		"api.privateapi.xyz",
+		"9000",
+		"de6d43dbbdf84b74a981bb560b3b94e0",
+		"038277bf-9513-4727-bc9d-2a7bfa60e035",
+		""
+	)
+	print(初始化结果)
+	if 初始化结果 == true then
+		break
+	end
+end
+
 setStopCallBack(function(error)
 	if error then
 		writeLog("脚本异常结束了!!!")
@@ -372,40 +387,47 @@ function 对局.启动(选择) -- 0 PVE 1 PVP
 end
 
 function 启动主轴()
---[===[	writeLog("登录方式: ",UI_in.登录方式,"卡密:",登录及实况arr["输入-卡密"])
-	if UI_in.登录方式==1 then
-		卡密 = 登录及实况arr["输入-卡密"]
-		if 卡密登录(卡密) then
-			心跳ID = beginThread(卡密心跳,卡密,1)
-			if 心跳ID == nil then
-				toast("心跳启动失败",0,0,15)
-				exitScript()
+	--[===[	
+		writeLog("登录方式: ",UI_in.登录方式,"卡密:",登录及实况arr["输入-卡密"])
+		if UI_in.登录方式==1 then
+			卡密 = 登录及实况arr["输入-卡密"]
+			if 卡密登录(卡密) then
+				心跳ID = beginThread(卡密心跳,卡密,1)
+				if 心跳ID == nil then
+					toast("心跳启动失败",0,0,15)
+					exitScript()
+				else
+					toast(登录结果["result"]["card_type"],"剩余时间:",登录结果["result"]["expires"],0,0,15)
+					writeLog(登录结果["result"]["card_type"] .. " 剩余时间:",登录结果["result"]["expires"])
+					sleep(2000)
+				end
 			else
-				toast(登录结果["result"]["card_type"],"剩余时间:",登录结果["result"]["expires"],0,0,15)
-				writeLog(登录结果["result"]["card_type"] .. " 剩余时间:",登录结果["result"]["expires"])
+				toast("错误:",登录结果["message"],0,0,15)
 				sleep(2000)
 			end
 		else
-			toast("错误:",登录结果["message"],0,0,15)
-			sleep(2000)
-		end
-	else
-		if 试用登录() then
-			心跳ID = beginThread(试用心跳,1)
-			if 心跳ID == nil then
-				toast("心跳启动失败",0,0,12)
-				exitScript()
+			if 试用登录() then
+				心跳ID = beginThread(试用心跳,1)
+				if 心跳ID == nil then
+					toast("心跳启动失败",0,0,12)
+					exitScript()
+				else
+					toast("剩余时间:",登录结果["result"]["expires"],0,0,15)
+					writeLog("剩余时间: ".. 登录结果["result"]["expires"])
+					sleep(2000)
+				end
 			else
-				toast("剩余时间:",登录结果["result"]["expires"],0,0,15)
-				writeLog("剩余时间: ".. 登录结果["result"]["expires"])
+				toast("错误:",登录结果["message"],0,0,15)
 				sleep(2000)
 			end
-		else
-			toast("错误:",登录结果["message"],0,0,15)
-			sleep(2000)
 		end
-	end]===]
+	]===]
 	
+	DDMControl.云控_连接云控系统()
+	local 获取设备名字结果=DDMControl.云控_获取设备名字()
+	print(获取设备名字结果)
+	DDMControl.云控_上传运行日志(获取设备名字结果)
+
 	分辨率调整()
 	局外检测.主界面等级()
 	
@@ -1398,6 +1420,7 @@ end
 
 --sleep(3000)
 local time = tickCount()
-类_保护(启动主轴,{nil})
+-- 类_保护(启动主轴,{nil})
+DDMControl.脚本_异常捕获运行(启动主轴,3)
 print("用时:",tickCount()-time)
 
