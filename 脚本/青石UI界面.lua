@@ -259,7 +259,6 @@ end
 
 
 function 功能设置界面()
-	
 	local 配置路径 = "sdcard/青石/功能设置配置.txt"
 	
 	动态.创建布局({名称=标题_1,大小={-1,-1},文字颜色="#FF22ffdb",背景="#ff112233"})
@@ -520,10 +519,8 @@ function 功能设置界面()
 	布局隐藏状态("换行4-",1,7,3)
 	
 	--以上是对局设置
-	
-	
-	
-	
+
+
 	function click_全局设置_0()
 		动态.重设图像控件({布局=标题_1,名称="图像-全局设置",文件名="图像-全局设置-1",事件="click_全局设置_1()"})
 		布局隐藏状态("换行5-",1,9,0)
@@ -573,20 +570,26 @@ function 功能设置界面()
 	
 	--以上为对局设置的响应控件
 	
+	-- 中断循环
+	local breakWhile = false
+	local time = tickCount()
 	--脚本启动和关闭按钮
 	function click_运行()
 		功能设置arr = 动态.获取所有控件值()
 		动态.保存配置文件("功能设置配置.txt")
 		ui.dismiss(标题_1)
 		sleep(500)
-		运行= true
+		运行 = true
+		breakWhile = true
 	end
 	动态.创建图像控件({事件="click_运行()",布局=标题_1,名称="图像-运行脚本",文件名="图像-运行脚本"})
+	
 	function click_关闭()
 		功能设置arr = 动态.获取所有控件值()
 		动态.保存配置文件("功能设置配置.txt")
 		ui.dismiss(标题_1)
 		sleep(500)
+		breakWhile = true
 		exitScript()
 	end
 	动态.创建文字框({布局=标题_1,名称="空白格",文本="                                 "})
@@ -598,8 +601,10 @@ function 功能设置界面()
 	ui.show(标题_1, false)
 
 	-- 默认 2 分钟后自动点运行按钮
-	local time = tickCount()
 	while (true) do
+		if breakWhile == true then
+			break
+		end
 		if (tickCount() - time) > (2 * 60 * 1000) then
 			click_运行()
 			break
