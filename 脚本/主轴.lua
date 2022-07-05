@@ -179,9 +179,9 @@ function 对局.默认()
 end
 
 function 对局.默认_行动步骤()
-	print("默认_战斗步骤 检查")
+	print("默认_行动步骤 检查")
 	if 局内检测.行动步骤() then
-		print("默认_战斗步骤 进行")
+		print("默认_行动步骤 进行")
 		精确.怪兽卡()
 		
 		if UI_in.额外特招  then
