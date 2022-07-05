@@ -179,7 +179,9 @@ function 对局.默认()
 end
 
 function 对局.默认_行动步骤()
+	print("默认_战斗步骤 检查")
 	if 局内检测.行动步骤() then
+		print("默认_战斗步骤 进行")
 		精确.怪兽卡()
 		
 		if UI_in.额外特招  then
@@ -216,15 +218,19 @@ function 对局.默认_行动步骤()
 		end
 		
 		if 局内检测.我方怪兽() ~= 0 and 基本.检测敌方金宫() == false then
+			print("进入战斗阶段")
 			局内操作.结束行动步骤(1)
 		else
+			print("直接结束回合")
 			局内操作.结束行动步骤(0)
 		end
 	end
 end
 
 function 对局.默认_战斗步骤()
+	print("默认_战斗步骤 检查")
 	if 局内检测.战斗步骤() then
+		print("默认_战斗步骤 选择")
 		if UI_in.攻击方式 == 0 then
 			print("默认攻击")
 			局内操作.怪兽默认攻击()
