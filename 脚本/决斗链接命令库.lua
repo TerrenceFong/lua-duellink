@@ -163,12 +163,17 @@ function 局外检测.主界面等级()
 	local 识别结果 = TURING.识别(80,1)
 	if 识别结果 ~= nil and 识别结果 ~= "" then    -- 注意：空值判断
 		local temp = splitStr(识别结果,"|")
+		print("局外检测.主界面等级")
+		print(temp)
 		if temp and next(temp) ~= nil then
 			等级 = math.tointeger(temp[1])
+		else
+			等级 = 0
 		end
 	else
 		等级 = 0
 	end
+
 	if UI_in.等级 < 等级  then
 		print("切换角色")
 		切换角色({50,300,90,520})
