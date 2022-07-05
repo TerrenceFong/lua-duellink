@@ -592,11 +592,20 @@ function 功能设置界面()
 	动态.创建文字框({布局=标题_1,名称="空白格",文本="                                 "})
 	动态.创建图像控件({事件="click_关闭()",布局=标题_1,名称="图像-关闭脚本",文件名="图像-退出脚本"})
 	
-	
 	动态.读取配置文件("功能设置配置.txt")
 	运行 = false
-	关闭 =false
-	ui.show(标题_1,false)
+	关闭 = false
+	ui.show(标题_1, false)
+
+	-- 默认 2 分钟后自动点运行按钮
+	local time = tickCount()
+	while (true) do
+		if (tickCount() - time) > (2 * 60 * 1000) then
+			click_运行()
+			break
+		end
+		sleep(1000)
+	end
 end
 
 function 登录及实况界面()

@@ -163,7 +163,9 @@ function 局外检测.主界面等级()
 	local 识别结果 = TURING.识别(80,1)
 	if 识别结果 ~= nil and 识别结果 ~= "" then    -- 注意：空值判断
 		local temp = splitStr(识别结果,"|")
-		等级= math.tointeger(temp[1])
+		if temp and next(temp) ~= nil then
+			等级 = math.tointeger(temp[1])
+		end
 	else
 		等级 = 0
 	end
@@ -195,7 +197,11 @@ function 局外检测.结算等级()
 	local 识别结果 = TURING.识别(80,1)
 	if 识别结果 ~= nil and 识别结果 ~= "" then    -- 注意：空值判断
 		local temp = splitStr(识别结果,"|")
-		等级 = math.tointeger(temp[1])
+		if temp and next(temp) ~= nil then
+			等级 = math.tointeger(temp[1])
+		else
+			等级 =  0
+		end
 	else
 		等级 =  0
 	end
@@ -240,12 +246,13 @@ function 局外检测.卡组_等级(...)
 	local 识别结果 = TURING.识别(80,1)
 	if 识别结果 ~= nil and 识别结果 ~= "" then
 		local temp =splitStr(识别结果,"|")
-		print("等级: ",temp[1])
-		return math.tointeger(temp[1])
-	else
-		print("等级: ",45)
-		return 45
+		if temp and next(temp) ~= nil then
+			print("等级: ",temp[1])
+			return math.tointeger(temp[1])
+		end
 	end
+	print("等级: ",45)
+	return 45
 end
 
 function 局外检测.复制卡组界面()
@@ -575,7 +582,9 @@ function 局内检测.信息_数值(目标) --字符串: 攻击 or 防御
 	local 识别结果 = TURING.识别(85)
 	if 识别结果 ~= nil and 识别结果 ~= "" then
 		local temp = splitStr(识别结果,"|")
-		return  math.tointeger(temp[1])
+		if temp and next(temp) ~= nil then
+			return math.tointeger(temp[1])
+		end
 	end
 	return 0
 end
@@ -2064,7 +2073,7 @@ function 基本.改守为攻()
 		if 局内检测.怪兽识别("防御",i,"我") then
 			sleep(100)
 			等待信息框({坐标.我方怪兽[i][1],坐标.我方怪兽[i][2],200})
-			if UI_in.零攻改守 and  局内检测.信息_数值("攻击") >  0 then
+			if UI_in.零攻改守 and 局内检测.信息_数值("攻击") > 0 then
 				if 局内操作.转攻及翻转() then
 					sleep(延迟.局内延迟)
 					if 局内等待() == 2 then return end
@@ -2967,8 +2976,10 @@ function 效果.识别(范围,文字)
 	local 识别结果 = TURING.识别(95)
 	if 识别结果 ~= nil and 识别结果 ~= "" then
 		local t = splitStr(识别结果,"|")
-		if t[1] == 文字 then
-			return true
+		if t and next(t) ~= nil then
+			if t[1] == 文字 then
+				return true
+			end
 		end
 	end
 	return false
@@ -3159,7 +3170,9 @@ function 白龙.卡名(...)
 	local 识别结果 = TURING.识别(80)
 	if 识别结果 ~= nil and 识别结果 ~= "" then
 		local temp = splitStr(识别结果,"|")
-		return temp[1]
+		if temp and next(temp) ~= nil then
+			return temp[1]
+		end
 	else
 		return ""
 	end
@@ -3886,10 +3899,11 @@ function 盖亚.识别(...) -- 标准:{范围},"文字"
 	local 识别结果 = TURING.识别(80)
 	if 识别结果 ~= nil and 识别结果 ~= "" then
 		local temp = splitStr(识别结果,"|")
-		return temp[1] == t[2]
-	else
-		return false
+		if temp and next(temp) ~= nil then
+			return temp[1] == t[2]
+		end
 	end
+	return false
 end
 
 function 盖亚.耀星龙()

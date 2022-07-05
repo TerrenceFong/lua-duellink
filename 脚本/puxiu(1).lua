@@ -138,10 +138,12 @@ function 类_TS.多点比色(数据,是否点击)
 	keepCapture()
 	local r = cmpColorEx(数据,0.9)
 	releaseCapture()
-	if r == 1then
+	if r == 1 then
 		if 是否点击 then
 			local zb = splitStr(数据,"|")
-			tap(math.floor(zb[1]),math.floor(zb[2]))
+			if temp and next(temp) ~= nil then
+				tap(math.floor(zb[1]),math.floor(zb[2]))
+			end
 		end
 		return true
 	end

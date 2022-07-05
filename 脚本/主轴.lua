@@ -1421,6 +1421,6 @@ end
 --sleep(3000)
 local time = tickCount()
 -- 类_保护(启动主轴,{nil})
-DDMControl.脚本_异常捕获运行(启动主轴,3)
-print("用时:",tickCount()-time)
+DDMControl.脚本_异常捕获运行(启动主轴, 3)
+print("用时:",tickCount() - time)
 
