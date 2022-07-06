@@ -179,7 +179,6 @@ function 对局.默认()
 end
 
 function 对局.默认_行动步骤()
-	print("默认_行动步骤 检查")
 	if 局内检测.行动步骤() then
 		print("默认_行动步骤 进行")
 		精确.怪兽卡()
@@ -228,7 +227,6 @@ function 对局.默认_行动步骤()
 end
 
 function 对局.默认_战斗步骤()
-	print("默认_战斗步骤 检查")
 	if 局内检测.战斗步骤() then
 		print("默认_战斗步骤 选择")
 		if UI_in.攻击方式 == 0 then
