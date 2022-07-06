@@ -1398,6 +1398,9 @@ function 对局.盖亚主要步骤()
 end
 
 function  对局.盖亚战斗步骤()
+	for i = 1, 8 do
+		局内操作.点击空白(200)
+	end
 	if 局内检测.战斗步骤() and 局内等待() == 1 then
 		if 局内检测.敌方怪兽() > 0 then
 			盖亚.智能攻击()
@@ -1405,8 +1408,7 @@ function  对局.盖亚战斗步骤()
 			局内操作.怪兽默认攻击()
 		end
 		
-		
-		if 盖亚.士兵数量 >0 then
+		if 盖亚.士兵数量 > 0 then
 			if 局内等待() == 1 then
 				sleep(1000)
 			end
