@@ -41,7 +41,7 @@ require("参数库")
 	士兵开关 = false,
 	本源开关 = false,
 	混沌开关 = false,
-	魔导骑士坐标 = {-1, -1},
+	魔道骑士坐标 = {-1, -1},
 	诅咒之龙效果 = false,
 	怪效强制开关 = false,
 	士兵效果 = false
@@ -700,11 +700,11 @@ end
 
 function 局内检测.局内弹窗_1()
 	local 颜色_弹窗_1 = {
-	{"BBAA53","5|0|B5A14F|10|0|AE9D4C|13|0|6D5113|17|0|AF9D4C|21|0|8E7D33|26|0|BBAA51|23|5|BBAA55|13|5|BB9B53|5|5|B5A14F|0|5|BBAA55"},
-	{"BBAA52","5|0|B5A150|10|0|AE9D4B|17|0|AF9D4C|21|0|8E7D30|27|0|C0AA52|33|0|BBA346|33|5|A29043|26|5|A29040|15|5|A69541|4|5|A18F42"},
-	{"9B8A3C","6|0|B5A14F|11|0|AE9D4C|18|0|AF9D4C|23|0|B5A450|29|0|A3903C|29|5|A19039|23|5|B5A350|14|5|AE904B|4|5|BBAA54|0|5|9B8A41"},
-	{"BBAA55","2|0|BBAA55|5|0|B5A14F|10|0|AE9D4C|14|0|685520|17|0|AE9D4C|21|0|8E7D37|16|6|907F33|13|6|907833|5|6|856B28|-1|6|786426"},
-	{"9B8A3E","6|0|B5A14F|11|0|AE9D4C|18|0|AF9D4C|22|0|8F7E32|29|0|A5903E|29|5|998732|17|5|B1A04D|6|5|A99445|3|5|AF9C4B|0|5|93813B"},
+		{"BBAA53","5|0|B5A14F|10|0|AE9D4C|13|0|6D5113|17|0|AF9D4C|21|0|8E7D33|26|0|BBAA51|23|5|BBAA55|13|5|BB9B53|5|5|B5A14F|0|5|BBAA55"},
+		{"BBAA52","5|0|B5A150|10|0|AE9D4B|17|0|AF9D4C|21|0|8E7D30|27|0|C0AA52|33|0|BBA346|33|5|A29043|26|5|A29040|15|5|A69541|4|5|A18F42"},
+		{"9B8A3C","6|0|B5A14F|11|0|AE9D4C|18|0|AF9D4C|23|0|B5A450|29|0|A3903C|29|5|A19039|23|5|B5A350|14|5|AE904B|4|5|BBAA54|0|5|9B8A41"},
+		{"BBAA55","2|0|BBAA55|5|0|B5A14F|10|0|AE9D4C|14|0|685520|17|0|AE9D4C|21|0|8E7D37|16|6|907F33|13|6|907833|5|6|856B28|-1|6|786426"},
+		{"9B8A3E","6|0|B5A14F|11|0|AE9D4C|18|0|AF9D4C|22|0|8F7E32|29|0|A5903E|29|5|998732|17|5|B1A04D|6|5|A99445|3|5|AF9C4B|0|5|93813B"},
 	}
 	local 范围_t = {{517,323,519,325},{517,526,519,528},{516,296,518,298},{517,528,519,530},{516,403,518,405},{517,512,519,514},}
 	for i,v in ipairs(范围_t) do
@@ -2296,10 +2296,13 @@ function 基本.检测敌方金宫()
 end
 
 function 局内等待()
-	while(true)do
+	while (true) do
 		if 局内检测.操作判断() then
 			if 盖亚.开关 then
-				盖亚.魔道骑士开关,盖亚.炼狱开关,盖亚.士兵开关,盖亚.本源开关=false,false,false,false
+				盖亚.魔道骑士开关 = false
+				盖亚.炼狱开关 = false
+				盖亚.士兵开关 = false
+				盖亚.本源开关 = false
 			end
 			return 1
 		elseif 局内检测.局内() == false then
@@ -2358,7 +2361,7 @@ function 效果.处理()
 	end
 	if 效果.局内弹窗_2() then goto End end
 	if 效果.请召唤怪兽() then goto End end
-	if  效果.局内弹窗_3() then goto End end
+	if 效果.局内弹窗_3() then goto End end
 	if 效果.查看对手卡() then goto End end
 	if 效果.弃一张卡() then goto End end
 	if 效果.选择种族属性() then goto End end
@@ -2370,12 +2373,15 @@ function 效果.处理()
 end
 
 function 效果.要使用哪个效果()
-	if 识别.识图(417,386,419,388,"效果_要使用哪个效果",0.8,0) then
+	if 识别.识图(417, 386, 419, 388, "效果_要使用哪个效果", 0.8, 0) then
 		print("效果-要使用哪个效果")
-		if 盖亚.开关 and 识别.识图(484,544,486,546,"盖亚场地效果",0.8,0)  then
+		if 盖亚.开关 and 识别.识图(484,544,486,546, "盖亚场地效果", 0.8, 0) then
 			if 盖亚.魔道骑士数量 == 0 then
-				tap (514,491)  -- 点击 2
+				print("盖亚 - 手卡没魔道骑士，点击 tab2")
+				tap(514,491)  -- 点击 2
 				sleep(200)
+				-- todo
+				-- 这里怎么点确认的
 				if 识别.识图(327,888,329,890,"局内_确认",0.8,1) then
 					sleep(100)
 					盖亚.魔道骑士开关 = true
@@ -2389,11 +2395,15 @@ function 效果.要使用哪个效果()
 					return true
 				end
 			elseif 盖亚.狱炎数量 == 0 then
+				print("盖亚 - 手卡没诅咒之龙")
+				-- todo
+				-- 这里怎么选择诅咒之龙的
 				tap(355,903)
 				sleep(100)
 				盖亚.狱炎开关 = true
 				return true
 			elseif 盖亚.士兵数量 == 0 then
+				print("盖亚 - 手卡有魔道骑士和诅咒之龙，点击 tab2 选士兵")
 				tap (514,491)  -- 点击 2
 				sleep(200)
 				tap(349,904)
@@ -2401,7 +2411,8 @@ function 效果.要使用哪个效果()
 				盖亚.士兵开关 =  true
 				return true
 			else
-				tap (514,491)  -- 点击 2
+				print("盖亚 - 手卡有魔道骑士、诅咒之龙和士兵，点击 tab2")
+				tap(514,491)  -- 点击 2
 				sleep(200)
 				if 识别.识图(327,888,329,890,"局内_确认",0.8,1) then
 					sleep(100)
@@ -2421,7 +2432,7 @@ function 效果.要使用哪个效果()
 		if 识别.识图(327,888,329,890,"局内_确认",0.8,1) then
 			sleep(100)
 		else
-			tap (379,488)
+			tap(379,488)
 			sleep(300)
 			goto one
 		end
@@ -2566,6 +2577,7 @@ function 效果.局内弹窗_3()
 			if 效果.从卡组特招() then return true end
 			if 效果.选择怪兽特招() then return true end
 		end
+
 		if 盖亚.开关 then
 			if 效果.选择卡从卡组加入手卡() then return true end
 			if 盖亚.选择一张卡() then return true end
@@ -2573,6 +2585,7 @@ function 效果.局内弹窗_3()
 			if 效果.选择卡送去墓地() then return true end
 			if 效果.选择融合特召() then return true end
 		end
+
 		if 效果.选一表侧怪兽除外() then return true end
 		if 效果.选择卡破坏() then return true end
 		if 效果.选择怪兽朝下() then return true end
@@ -2707,7 +2720,7 @@ function 效果.局内弹窗_2()
 			if arr[2][1]>0 then
 				if 局内检测.吃坑() then
 					tap (arr[2][2],arr[2][3])
-					print("盖亚 - 吃坑发动龙魔导效果")
+					print("盖亚 - 吃坑发动龙魔道效果")
 					goto two
 					return true
 				end
@@ -2853,7 +2866,7 @@ function 效果.选择融合特召()
 				if 盖亚.效果选中天翔骑士() then
 				end
 			else
-				if 盖亚.效果选中龙魔导骑士() then
+				if 盖亚.效果选中龙魔道骑士() then
 				end
 			end
 			tap(360,1084)
@@ -2904,12 +2917,14 @@ function 效果.选择怪兽特招()
 				sleep(100)
 			end
 		elseif 盖亚.开关 then
-			if 局内检测.敌方场地()  then
+			if 局内检测.敌方场地() then
 				盖亚.诅咒之龙效果 = true
 			end
+
 			if 盖亚.效果选中狱炎() then
 			else
-				tap (126,857)
+				print("盖亚 - 未选中诅咒之龙，选择第一个")
+				tap(126,857)
 				sleep(100)
 			end
 		end
@@ -2943,7 +2958,7 @@ function 效果.选择卡从卡组加入手卡()
 		if 盖亚.开关 then
 			sleep(200)
 			if 盖亚.混沌开关 then
-				if 盖亚.魔道骑士数量==0 and  盖亚.效果选中魔道骑士盖亚() then
+				if 盖亚.魔道骑士数量 == 0 and 盖亚.效果选中魔道骑士盖亚() then
 					
 				elseif 盖亚.士兵数量 == 0 and 盖亚.效果选中士兵() then
 					
@@ -3000,8 +3015,8 @@ function 效果.在行动阶段结束前发动()
 		print("效果 - 对方行动阶段结束")
 		if 盖亚.开关 then
 			局内检测.敌方攻击力()
-			if 盖亚.效果检索龙魔导骑士() then
-				if 盖亚.效果选中龙魔导骑士() then
+			if 盖亚.效果检索龙魔道骑士() then
+				if 盖亚.效果选中龙魔道骑士() then
 					local atk = 局内检测.信息_数值("攻击")
 					for i=1,3 do
 						if 实况.攻击力[2][i] > atk then
@@ -3968,7 +3983,7 @@ function 盖亚.识别(...) -- 标准:{范围},"文字"
 	TURING.滤镜_彩色_二值化("0-100")
 	TURING.切割_范围投影切割(4,2)
 	TURING.字库_加载识别字库(getSdPath() .. "/盖亚.lib")
-	local 识别结果 = TURING.识别(80)
+	local 识别结果 = TURING.识别(75)
 	if 识别结果 ~= nil and 识别结果 ~= "" then
 		local temp = splitStr(识别结果,"|")
 		if temp and next(temp) ~= nil then
@@ -3983,6 +3998,8 @@ function 盖亚.耀星龙()
 end
 
 function 盖亚.征服()
+	-- todo
+	-- 是否能正确识别场地
 	return 盖亚.识别({110,255,174,288},"全程")
 end
 
@@ -3999,7 +4016,7 @@ function 盖亚.魔道骑士盖亚()
 end
 
 function 盖亚.混沌之场()
-	return 	盖亚.识别({110,250,178,295},"之场")
+	return 盖亚.识别({110,250,178,295},"之场")
 end
 
 function 盖亚.龙之镜()
@@ -4060,13 +4077,15 @@ end
 
 function 盖亚.效果检索魔道骑士()
 	local 颜色_t = {"935030","0|12|452404|0|27|924E1E|0|41|652110|0|60|DEBC89|0|81|8E5C43|0|89|DCA574|0|96|402F2F|0|106|513838|0|112|D9B774|0|116|756442"}
-	for i=1,2 do
-		if 识别.多点找色(0,810,720,812,颜色_t,0,0.9) then
+	for i=1,5 do
+		if 识别.多点找色(0,810,720,812,颜色_t,0,0.8) then
+			print("识别到魔道骑士的位置")
 			return true
 		else
 			sleep(100)
 		end
 	end
+	print("未识别到魔道骑士的位置")
 	return false
 end
 
@@ -4085,7 +4104,7 @@ end
 function 盖亚.效果检索狱炎()
 	local 颜色_t = {"2F89F4","0|14|1119CF|0|23|060DCC|0|31|060EB3|0|46|235689|0|55|051F96|0|64|4173F1|0|72|0028D5|0|80|0048F2|0|87|55BBEE|0|99|1346DF"}
 	for i=1,2 do
-		if 识别.多点找色(0,810,720,812,颜色_t,0,0.9) then
+		if 识别.多点找色(0,810,720,812,颜色_t,0,0.8) then
 			return true
 		else
 			sleep(100)
@@ -4106,7 +4125,7 @@ function 盖亚.效果检索天翔骑士()
 	return false
 end
 
-function 盖亚.效果检索龙魔导骑士()
+function 盖亚.效果检索龙魔道骑士()
 	local 颜色_t={"020A3C","0|7|010B4F|0|13|04368B|0|18|34ABBC|0|29|52C9DA|0|102|01184A|0|98|012264|0|109|011136|0|112|00134B|0|114|040972|0|117|20289B"}
 	for i=1,2 do
 		if 识别.多点找色(0,811,720,813,颜色_t,0,0.9) then
@@ -4147,13 +4166,13 @@ function 盖亚.效果选中天翔骑士()
 	return false
 end
 
-function 盖亚.效果选中龙魔导骑士()
-	print("盖亚-选中龙魔导骑士")
+function 盖亚.效果选中龙魔道骑士()
+	print("盖亚-选中龙魔道骑士")
 	local 开关 = true
 	local 数量= 效果.检索目标个数()
 	if 数量 < 3 then 开关= false end
 	for i=1,2 do
-		if 盖亚.效果检索龙魔导骑士() then
+		if 盖亚.效果检索龙魔道骑士() then
 			tap(识别X,识别Y+50)
 			sleep(100)
 			return true
@@ -4182,12 +4201,12 @@ function 盖亚.效果选中士兵()
 end
 
 function 盖亚.效果选中狱炎()
-	print("盖亚-选中诅咒之龙")
 	local 开关 = true
 	local 数量= 效果.检索目标个数()
 	if 数量 < 3 then 开关= false end
 	for i=1,2 do
 		if 盖亚.效果检索狱炎() then
+			print("盖亚 - 选中诅咒之龙")
 			tap(识别X,识别Y+50)
 			sleep(100)
 			return true
@@ -4216,17 +4235,23 @@ function 盖亚.效果选中卡去墓地()
 end
 
 function 盖亚.效果选中魔道骑士盖亚()
-	print("盖亚-选中魔导骑士")
+	print("盖亚-选中魔道骑士")
 	local 开关 = true
-	local 数量= 效果.检索目标个数()
-	if 数量 < 3 then 开关= false end
-	for i=1,2 do
+	local 数量 = 效果.检索目标个数()
+	if 数量 < 3 then
+		开关 = false
+	end
+
+	for i=1,3 do
 		if 盖亚.效果检索魔道骑士() then
-			tap(识别X,识别Y+50)
+			tap(识别X, 识别Y+50)
 			sleep(100)
 			return true
 		end
-		if 开关 == false then return false end
+		if 开关 == false then
+			return false
+		end
+		print("当前页未找到魔道骑士，准备翻页")
 		局内操作.效果翻一页()
 	end
 	return false
@@ -4347,7 +4372,6 @@ function 盖亚.使用混沌之场()
 end
 
 function 盖亚.使用征服()
-	
 	if 局内检测.魔陷() == 0 then
 		HUD.提示信息("魔陷区已满")
 		return
@@ -4364,6 +4388,7 @@ function 盖亚.使用征服()
 	if 返回下标 ~= -1 then
 		局内操作.点击手牌(手牌X,手牌Y)
 		if 盖亚.征服() then
+			print("检测到征服场地，开始使用")
 			局内操作.拖动手牌(手牌X,手牌Y)
 			if 局内检测.发动魔法() then
 				tap(278,941)
@@ -4382,7 +4407,7 @@ function 盖亚.使用征服()
 		end
 	else
 		局内操作.点击空白(500)
-		print("盖亚-未识别征服")
+		print("盖亚 - 未识别到征服")
 	end
 end
 
@@ -4465,22 +4490,38 @@ function 盖亚.使用枪杀()
 end
 
 function 盖亚.检测手牌()
-	盖亚.魔道骑士数量,盖亚.狱炎数量,盖亚.士兵数量,盖亚.征服数量,盖亚.混沌数量,盖亚.本源数量,盖亚.怪数量,盖亚.龙之镜数量=0,0,0,0,0,0,0,0
-	盖亚.魔导骑士坐标 = {-1,-1}
+	盖亚.魔道骑士数量 = 0
+	盖亚.狱炎数量 = 0
+	盖亚.士兵数量 = 0
+	盖亚.征服数量 = 0
+	盖亚.混沌数量 = 0
+	盖亚.本源数量 = 0
+	盖亚.怪数量 = 0
+	盖亚.龙之镜数量 = 0
+	盖亚.魔道骑士坐标 = {-1, -1}
+
 	local 量 = 局内检测.手牌数量()
 	if 量 == 0 then
 		HUD.提示信息("没有手牌了")
-		白龙.通召点 = true
+		盖亚.通召点 = true
 		return
 	end
+
 	local 下标 = 1
 	print("盖亚-检测手牌详细数量")
 	::one::
-	local 返回下标 = 识别手牌(量,下标,颜色.效果怪兽,颜色.魔法卡,0.9)
+	local 返回下标 = 识别手牌(量, 下标, 颜色.效果怪兽, 颜色.魔法卡, 0.8)
 	if 返回下标 ~= -1 then
 		局内操作.点击手牌(手牌X,手牌Y)
 		local x,y = 手牌X,手牌Y
-		if 盖亚.诅咒之龙() then
+		if 盖亚.魔道骑士盖亚() then
+			盖亚.怪数量 = 盖亚.怪数量 + 1
+			盖亚.魔道骑士数量 = 盖亚.魔道骑士数量 + 1
+			盖亚.魔道骑士坐标 = {x,y}
+			下标 = 返回下标 + 1
+			goto one
+			return
+		elseif 盖亚.诅咒之龙() then
 			盖亚.怪数量 = 盖亚.怪数量 + 1
 			盖亚.狱炎数量 = 盖亚.狱炎数量 + 1
 			下标 = 返回下标 + 1
@@ -4488,13 +4529,6 @@ function 盖亚.检测手牌()
 			return
 		elseif 盖亚.耀星龙() then
 			盖亚.怪数量 = 盖亚.怪数量 + 1
-			下标 = 返回下标 + 1
-			goto one
-			return
-		elseif 盖亚.魔道骑士盖亚()  then
-			盖亚.怪数量 = 盖亚.怪数量 + 1
-			盖亚.魔道骑士数量 = 盖亚.魔道骑士数量 + 1
-			盖亚.魔导骑士坐标 = {x,y}
 			下标 = 返回下标 + 1
 			goto one
 			return
@@ -4531,18 +4565,28 @@ function 盖亚.检测手牌()
 			return
 		end
 	else
-		print("怪数量:",盖亚.怪数量,"魔道骑士:",盖亚.魔道骑士数量,"诅咒之龙:",盖亚.狱炎数量,"士兵:",盖亚.士兵数量,"征服:",盖亚.征服数量,"混沌:",盖亚.混沌数量,"本源:",盖亚.本源数量,"龙之镜:",盖亚.龙之镜数量)
+		print("魔道骑士: "盖亚.魔道骑士数量)
+		print("诅咒之龙: "盖亚.狱炎数量)
+		print("征服: "盖亚.征服数量)
+		print("怪数量: "盖亚.怪数量)
+		print("士兵: "盖亚.士兵数量)
+		print("本源: "盖亚.本源数量)
+		print("混沌场: "盖亚.混沌数量)
+		print("龙之镜: "盖亚.龙之镜)
 		局内操作.点击空白(500)
 	end
 end
 
-function 盖亚.召唤魔导骑士()
+function 盖亚.召唤魔道骑士()
+	-- 通招魔道骑士前会做手牌检查
+	-- 手牌 0 则跳过通招
 	if 盖亚.通召点 then
 		return
 	end
 	
-	if 盖亚.魔导骑士坐标[1] > -1 then  -- 检索过数量后快捷召唤
-		局内操作.拖动手牌(盖亚.魔导骑士坐标[1],盖亚.魔导骑士坐标[2])
+	-- 检索过数量后快捷召唤
+	if 盖亚.魔道骑士坐标[1] > -1 then
+		局内操作.拖动手牌(盖亚.魔道骑士坐标[1],盖亚.魔道骑士坐标[2])
 		if 局内操作.通常召唤() then
 			sleep(延迟.召唤)
 			if 局内等待() == 2 then return end
@@ -4550,13 +4594,14 @@ function 盖亚.召唤魔导骑士()
 			return
 		end
 	end
+
 	local 量 = 局内检测.手牌数量()
 	if 量 == 0 then
 		HUD.提示信息("没有手牌了")
 		return
 	end
 	local 下标 = 1
-	print("盖亚-召唤魔导骑士")
+	print("盖亚-召唤魔道骑士")
 	::one::
 	local 返回下标 = 识别手牌(量,下标,颜色.效果怪兽,相似度.怪兽卡)
 	if 返回下标 ~= -1  then
@@ -4576,7 +4621,7 @@ function 盖亚.召唤魔导骑士()
 		end
 	else
 		局内操作.点击空白(500)
-		HUD.提示信息("盖亚-召唤魔导骑士")
+		HUD.提示信息("盖亚-召唤魔道骑士")
 	end
 end
 

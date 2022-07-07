@@ -1298,54 +1298,73 @@ function 对局.盖亚()
 end
 
 function 对局.盖亚主要步骤()
-	if 局内检测.行动步骤() and 局内等待()==1 then
-		local 场地效果开关 =  true
-		盖亚.通召点,盖亚.技能开关,盖亚.诅咒之龙效果,盖亚.怪效强制开关,盖亚.士兵效果 = false,false,false,false,false
+	if 局内检测.行动步骤() and 局内等待() == 1 then
+		local 场地效果开关 = true
+		盖亚.通召点 = false
+		盖亚.技能开关 = false
+		盖亚.诅咒之龙效果 = false
+		盖亚.怪效强制开关 = false
+		盖亚.士兵效果 = false
+
+		-- 场地操作
+		print("检测手牌 - 场地操作前")
 		盖亚.检测手牌()
 		local 征服flag = 盖亚.检测在场征服()
 		if 局内检测.在场_场地魔法() == false then
-			print("盖亚-场上不存在场地魔法卡")
-			if 盖亚.混沌数量 >  0 then
-				print("盖亚-使用混沌之场")
+			print("盖亚 - 场上不存在场地魔法卡")
+			if 盖亚.混沌数量 > 0 then
+				print("盖亚 - 使用混沌之场")
 				盖亚.使用混沌之场()
 				
+				print("检测手牌 - 使用混沌场之后")
 				盖亚.检测手牌()
 				if 盖亚.征服数量 > 0 then
 					盖亚.使用征服()
+					print("检测手牌 - 使用混沌场、征服场地之后")
 					盖亚.检测手牌()
 					if 基本.发动场地() then 场地效果开关 = false end
 				else
 					if 基本.发动技能() then
+						print("检测手牌 - 发动人物技能之后")
 						盖亚.检测手牌()
 						if 基本.发动场地() then 场地效果开关 = false end
 					end
 				end
-				
 			elseif 盖亚.征服数量 > 0  then
-				print("盖亚-使用征服")
 				盖亚.使用征服()
+				print("检测手牌 - 使用征服场地之后")
 				盖亚.检测手牌()
 				if 基本.发动场地() then 场地效果开关 = false end
 			elseif 盖亚.征服数量 == 0 and 盖亚.怪数量 > 1 then
-				print("盖亚-发动技能")
 				if 基本.发动技能() then
+					print("此时没征服场地，但是怪兽数量大于 1")
+					print("检测手牌 - 发动完人物技能后")
 					盖亚.检测手牌()
 					if 基本.发动场地() then 场地效果开关 = false end
 				end
 			end
-			
 		else
+			print("盖亚 - 场上存在场地魔法卡")
+			if 征服flag then
+				print("当前场地卡为：征服")
+			else
+				print("当前场地卡为：混沌场")
+			end
 			if 征服flag == false and 盖亚.征服数量 > 0 then
 				盖亚.使用征服()
+				print("检测手牌 - 使用征服操作后（不一定使用，可能没有）")
 				盖亚.检测手牌()
 				if 基本.发动场地() then 场地效果开关 = false end
 			elseif 征服flag == false then
 				if 基本.发动技能() then
+					print("检测手牌 - 发动完人物技能后")
 					盖亚.检测手牌()
 					if 基本.发动场地() then 场地效果开关 = false end
 				end
 			end
 		end
+
+		print("检测手牌 - 场地操作后")
 		盖亚.检测手牌()
 		local flag =  false
 		局内检测.敌方攻击力()
@@ -1358,9 +1377,10 @@ function 对局.盖亚主要步骤()
 		
 		if 场地效果开关 then 基本.发动场地() end
 		
+		-- 召唤魔道骑士
 		if 盖亚.魔道骑士数量 > 0 and (局内检测.我方怪兽() == 0 or flag) then
 			print("盖亚-手牌存在魔道骑士")
-			盖亚.召唤魔导骑士()
+			盖亚.召唤魔道骑士()
 			if 盖亚.通召点 then
 				盖亚.发动在场诅咒龙效果()
 			end
@@ -1369,7 +1389,6 @@ function 对局.盖亚主要步骤()
 				print("盖亚-不存在 魔道骑士 发动本源效果")
 				盖亚.发动本源效果()
 			else
-				
 				if 局内检测.我方怪兽() == 0 then
 					精确.怪兽卡()
 				end
@@ -1397,7 +1416,7 @@ function 对局.盖亚主要步骤()
 	end
 end
 
-function  对局.盖亚战斗步骤()
+function 对局.盖亚战斗步骤()
 	for i = 1, 8 do
 		局内操作.点击空白(200)
 	end
