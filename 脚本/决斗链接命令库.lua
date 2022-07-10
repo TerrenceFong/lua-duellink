@@ -2247,6 +2247,7 @@ function 基本.发动场地()
 		sleep(100)
 		等待信息框({83,691,200})
 		if 局内操作.场地魔法发动() then
+			print("发动场地效果")
 			sleep(500)
 			if 局内等待() == 2 then return end
 			return true
@@ -2299,6 +2300,7 @@ function 局内等待()
 	while (true) do
 		if 局内检测.操作判断() then
 			if 盖亚.开关 then
+				print("盖亚 - 局内")
 				盖亚.魔道骑士开关 = false
 				盖亚.炼狱开关 = false
 				盖亚.士兵开关 = false
@@ -2328,7 +2330,6 @@ function 效果.检索目标个数()
 end
 
 function 效果.检索效果卡名()
-	
 	local 颜色_t={ -- 1.落穴,2.龙骑士,3.士兵
 	{"1F3748","0|4|1D353E|0|22|152E3E|0|38|375861|0|48|9CACB5|0|63|A9B9C2|0|74|B0C0C8|0|85|6D8596|0|94|A1B1BD|0|101|B1C1CB|0|116|5D798A"},
 	{"010821","0|4|333399|0|11|4949D1|0|19|51ACBD|0|35|197C94|0|46|2892A2|0|98|041D4E|0|108|01113B|0|112|011338|0|115|000C4E|0|118|4046BD"},
@@ -2338,7 +2339,7 @@ function 效果.检索效果卡名()
 	for j=1,3 do
 		local 范围_t={0,809,720,811}
 		for i=1,3 do
-			if 识别.多点找色(范围_t,颜色_t[j],0,0.9) then
+			if 识别.多点找色(范围_t,颜色_t[j],0,0.85) then
 				result[j] = {result[j][1]+1,识别X,识别Y}
 				范围_t[1] = 识别X + 100
 			else
@@ -2375,7 +2376,7 @@ end
 function 效果.要使用哪个效果()
 	if 识别.识图(417, 386, 419, 388, "效果_要使用哪个效果", 0.8, 0) then
 		print("效果-要使用哪个效果")
-		if 盖亚.开关 and 识别.识图(484,544,486,546, "盖亚场地效果", 0.8, 0) then
+		if 盖亚.开关 and 识别.识图(338,544,369,573, "盖亚场地效果", 0.8, 0) then
 			if 盖亚.魔道骑士数量 == 0 then
 				print("盖亚 - 手卡没魔道骑士，点击 tab2")
 				tap(514,491)  -- 点击 2
@@ -2387,6 +2388,9 @@ function 效果.要使用哪个效果()
 					盖亚.魔道骑士开关 = true
 					return true
 				else
+					-- 如果手里没魔道骑士
+					-- 并且也没龙族怪兽
+					-- 则点击 tab1 拿龙怪
 					tap(195,490) -- 点击 1
 					sleep(200)
 					盖亚.狱炎开关 = true
@@ -2396,8 +2400,7 @@ function 效果.要使用哪个效果()
 				end
 			elseif 盖亚.狱炎数量 == 0 then
 				print("盖亚 - 手卡没诅咒之龙")
-				-- todo
-				-- 这里怎么选择诅咒之龙的
+				-- 点击 tab 确认按钮
 				tap(355,903)
 				sleep(100)
 				盖亚.狱炎开关 = true
@@ -2428,8 +2431,11 @@ function 效果.要使用哪个效果()
 				end
 			end
 		end
+
+		-- 处理 tab 确认逻辑，防止没点确认
 		::one::
 		if 识别.识图(327,888,329,890,"局内_确认",0.8,1) then
+			print("一直在点确认")
 			sleep(100)
 		else
 			tap(379,488)
@@ -2717,14 +2723,15 @@ function 效果.局内弹窗_2()
 			local arr = 效果.检索效果卡名()
 			local count = arr[1][1] + arr[2][1] + arr[3][1]
 			print(敌怪,arr[1][1],arr[2][1],arr[3][1])
-			if arr[2][1]>0 then
-				if 局内检测.吃坑() then
-					tap (arr[2][2],arr[2][3])
-					print("盖亚 - 吃坑发动龙魔道效果")
-					goto two
-					return true
-				end
-			end
+			-- todo 暂时屏蔽龙魔道的效果
+			-- if arr[2][1]>0 then
+			-- 	if 局内检测.吃坑() then
+			-- 		tap (arr[2][2],arr[2][3])
+			-- 		print("盖亚 - 吃坑发动龙魔道效果")
+			-- 		goto two
+			-- 		return true
+			-- 	end
+			-- end
 			if arr[1][1] > 0 then
 				if 敌怪 > 1 then
 					tap(arr[1][2],arr[1][3])
@@ -3014,20 +3021,22 @@ function 效果.在行动阶段结束前发动()
 	if 效果.识别({94,678,124,707},"行") and 效果.识别({229,708,250,735},"?") then
 		print("效果 - 对方行动阶段结束")
 		if 盖亚.开关 then
-			局内检测.敌方攻击力()
-			if 盖亚.效果检索龙魔道骑士() then
-				if 盖亚.效果选中龙魔道骑士() then
-					local atk = 局内检测.信息_数值("攻击")
-					for i=1,3 do
-						if 实况.攻击力[2][i] > atk then
-							tap(359,1087)
-							sleep(200)
-							return true
-						end
-					end
-					局内操作.取消效果()
-				end
-			elseif 盖亚.效果检索士兵() then
+			-- todo 暂时屏蔽
+			-- 局内检测.敌方攻击力()
+			-- if 盖亚.效果检索龙魔道骑士() then
+			-- 	if 盖亚.效果选中龙魔道骑士() then
+			-- 		local atk = 局内检测.信息_数值("攻击")
+			-- 		for i=1,3 do
+			-- 			if 实况.攻击力[2][i] > atk then
+			-- 				tap(359,1087)
+			-- 				sleep(200)
+			-- 				return true
+			-- 			end
+			-- 		end
+			-- 		局内操作.取消效果()
+			-- 	end
+			-- else
+			if 盖亚.效果检索士兵() then
 				tap(663,1219)
 				sleep(500)
 				local 属性 = 盖亚.战阶识别我怪信息()
@@ -3979,64 +3988,75 @@ end
 
 function 盖亚.识别(...) -- 标准:{范围},"文字"
 	t = {...}
-	TURING.来源_获取屏幕像素(t[1][1],t[1][2],t[1][3],t[1][4])
-	TURING.滤镜_彩色_二值化("0-100")
-	TURING.切割_范围投影切割(4,2)
-	TURING.字库_加载识别字库(getSdPath() .. "/盖亚.lib")
-	local 识别结果 = TURING.识别(75)
-	if 识别结果 ~= nil and 识别结果 ~= "" then
-		local temp = splitStr(识别结果,"|")
-		if temp and next(temp) ~= nil then
-			return temp[1] == t[2]
+	local result = false
+	local times = 0
+	while (true) do
+		-- 可能会识别失败，多次识别检测
+		if times >= 12 then
+			break
+		end
+
+		TURING.来源_获取屏幕像素(t[1][1],t[1][2],t[1][3],t[1][4])
+		TURING.滤镜_彩色_二值化("0-100")
+		TURING.切割_范围投影切割(4,2)
+		TURING.字库_加载识别字库(getSdPath() .. "/盖亚1.lib")
+		local 识别结果 = TURING.识别(80)
+		if 识别结果 ~= nil and 识别结果 ~= "" then
+			if 识别结果 == t[2] then
+				result = true
+				break
+			else
+				times = times + 1
+			end
+		else
+			times = times + 1
 		end
 	end
-	return false
+	return result
 end
 
 function 盖亚.耀星龙()
-	return 盖亚.识别({141,256,208,289},"星龙")
+	return 盖亚.识别({141,256,208,289}, "耀星")
 end
 
 function 盖亚.征服()
-	-- todo
-	-- 是否能正确识别场地
-	return 盖亚.识别({110,255,174,288},"全程")
+	return 盖亚.识别({45,253,112,289}, "奔驰")
 end
 
 function 盖亚.士兵()
-	return 盖亚.识别({237,256,303,287},"士兵")
+	return 盖亚.识别({237,250,303,290}, "士兵")
 end
 
 function 盖亚.诅咒之龙()
-	return 盖亚.识别({45,253,112,289},"狱炎")
+	return 盖亚.识别({45,253,112,289}, "狱炎")
 end
 
 function 盖亚.魔道骑士盖亚()
-	return 盖亚.识别({38,249,113,294},"魔道")
+	return 盖亚.识别({38,249,113,294}, "魔道")
 end
 
 function 盖亚.混沌之场()
-	return 盖亚.识别({110,250,178,295},"之场")
+	return 盖亚.识别({110,250,178,295}, "之场")
 end
 
 function 盖亚.龙之镜()
-	return 盖亚.识别({79,255,144,288},"之镜")
+	return 盖亚.识别({79,255,144,288}, "之镜")
 end
 
 function 盖亚.本源()
-	return 盖亚.识别({239,256,303,288},"本源")
+	return 盖亚.识别({239,256,303,288}, "本源")
 end
 
 function 盖亚.天翔骑士()
-	return 盖亚.识别({46,255,110,287},"天翔")
+	return 盖亚.识别({46,255,110,287}, "天翔")
 end
 
 function 盖亚.枪杀()
-	return 盖亚.识别({111,255,173,288},"枪杀")
+	return 盖亚.识别({110,255,174,288}, "枪杀")
 end
 
 function 盖亚.龙魔道()
-	return 盖亚.识别({45,255,142,289},"龙魔道")
+	return 盖亚.识别({38,249,145,289}, "龙魔道")
 end
 
 function 盖亚.效果检索本源()
@@ -4509,6 +4529,9 @@ function 盖亚.检测手牌()
 
 	local 下标 = 1
 	print("盖亚-检测手牌详细数量")
+	-- 初步思路
+	-- 将怪兽卡和魔法卡区分判断和循环，减少循环次数
+	-- 怪兽卡只要判断到魔道骑士/诅咒之龙，后续怪兽卡直接跳过
 	::one::
 	local 返回下标 = 识别手牌(量, 下标, 颜色.效果怪兽, 颜色.魔法卡, 0.8)
 	if 返回下标 ~= -1 then
@@ -4565,14 +4588,14 @@ function 盖亚.检测手牌()
 			return
 		end
 	else
-		print("魔道骑士: "盖亚.魔道骑士数量)
-		print("诅咒之龙: "盖亚.狱炎数量)
-		print("征服: "盖亚.征服数量)
-		print("怪数量: "盖亚.怪数量)
-		print("士兵: "盖亚.士兵数量)
-		print("本源: "盖亚.本源数量)
-		print("混沌场: "盖亚.混沌数量)
-		print("龙之镜: "盖亚.龙之镜)
+		print("魔道骑士: ", 盖亚.魔道骑士数量)
+		print("诅咒之龙: ", 盖亚.狱炎数量)
+		print("征服: ", 盖亚.征服数量)
+		print("怪数量: ", 盖亚.怪数量)
+		print("士兵: ", 盖亚.士兵数量)
+		print("本源: ", 盖亚.本源数量)
+		print("混沌场: ", 盖亚.混沌数量)
+		print("龙之镜: ", 盖亚.龙之镜数量)
 		局内操作.点击空白(500)
 	end
 end
