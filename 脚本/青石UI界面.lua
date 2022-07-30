@@ -8,7 +8,7 @@ PVEarr = jsonLib.decode(动态.读取配置文件内容("PVE配置.txt"))
 标题_1="^作者:青石       QQ:3416918055      群:624844984"
 标题_2="*作者:青石       QQ:3416918055      群:624844984"
 标题_3="~作者:青石       QQ:3416918055      群:624844984"
-local 当前版本 = "0.3.1"
+local 当前版本 = "0.3.2"
 local 最新版本,公告
 local ID = createHUD()
 local function HUD(文字)
