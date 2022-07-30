@@ -2741,6 +2741,7 @@ function 效果.局内弹窗_2()
 				end
 			end
 			if 效果.在行动阶段结束前发动() then
+				print('效果.在行动阶段结束前发动()')
 				return true
 			end
 			if count == 效果数 then
@@ -3036,28 +3037,28 @@ function 效果.在行动阶段结束前发动()
 			-- 		局内操作.取消效果()
 			-- 	end
 			-- else
-			if 盖亚.效果检索士兵() then
-				tap(663,1219)
-				sleep(500)
-				local 属性 = 盖亚.战阶识别我怪信息()
-				for i=1,3 do
-					if ( 属性[i][1] ==1 or 属性[i][1] == 2 ) and 属性[i][2] < 2600 then
-						tap(663,1219)
-						sleep(500)
-						for i=1,3 do
-							if 实况.攻击力[2][i] >= 2600 then
-								盖亚.士兵效果 = true
-								break
-							end
-						end
-						if 盖亚.效果选中士兵() then
-							tap(359,1087)
-							sleep(200)
-							return true
-						end
-					end
-				end
-			end
+			-- if 盖亚.效果检索士兵() then
+			-- 	tap(663,1219)
+			-- 	sleep(500)
+			-- 	local 属性 = 盖亚.战阶识别我怪信息()
+			-- 	for i=1,3 do
+			-- 		if ( 属性[i][1] ==1 or 属性[i][1] == 2 ) and 属性[i][2] < 2600 then
+			-- 			tap(663,1219)
+			-- 			sleep(500)
+			-- 			for i=1,3 do
+			-- 				if 实况.攻击力[2][i] >= 2600 then
+			-- 					盖亚.士兵效果 = true
+			-- 					break
+			-- 				end
+			-- 			end
+			-- 			if 盖亚.效果选中士兵() then
+			-- 				tap(359,1087)
+			-- 				sleep(200)
+			-- 				return true
+			-- 			end
+			-- 		end
+			-- 	end
+			-- end
 		end
 		return true
 	end
@@ -4528,12 +4529,12 @@ function 盖亚.检测手牌()
 	end
 
 	local 下标 = 1
-	print("盖亚-检测手牌详细数量")
+	print("盖亚 - 检测手牌详细数量")
 	-- 初步思路
 	-- 将怪兽卡和魔法卡区分判断和循环，减少循环次数
 	-- 怪兽卡只要判断到魔道骑士/诅咒之龙，后续怪兽卡直接跳过
 	::one::
-	local 返回下标 = 识别手牌(量, 下标, 颜色.效果怪兽, 颜色.魔法卡, 0.8)
+	local 返回下标 = 识别手牌(量, 下标, 颜色.效果怪兽, 相似度.怪兽卡)
 	if 返回下标 ~= -1 then
 		局内操作.点击手牌(手牌X,手牌Y)
 		local x,y = 手牌X,手牌Y
@@ -4561,24 +4562,9 @@ function 盖亚.检测手牌()
 			下标 = 返回下标 + 1
 			goto one
 			return
-		elseif 盖亚.征服() then
-			盖亚.征服数量 = 盖亚.征服数量 + 1
-			下标 = 返回下标 + 1
-			goto one
-			return
-		elseif 盖亚.混沌之场() then
-			盖亚.混沌数量 = 盖亚.混沌数量 + 1
-			下标 = 返回下标 + 1
-			goto one
-			return
 		elseif 盖亚.本源() then
 			盖亚.怪数量 = 盖亚.怪数量 + 1
 			盖亚.本源数量 = 盖亚.本源数量  + 1
-			下标 = 返回下标 + 1
-			goto one
-			return
-		elseif 盖亚.龙之镜() then
-			盖亚.龙之镜数量 = 盖亚.龙之镜数量 + 1
 			下标 = 返回下标 + 1
 			goto one
 			return
@@ -4588,16 +4574,48 @@ function 盖亚.检测手牌()
 			return
 		end
 	else
-		print("魔道骑士: ", 盖亚.魔道骑士数量)
-		print("诅咒之龙: ", 盖亚.狱炎数量)
-		print("征服: ", 盖亚.征服数量)
-		print("怪数量: ", 盖亚.怪数量)
-		print("士兵: ", 盖亚.士兵数量)
-		print("本源: ", 盖亚.本源数量)
-		print("混沌场: ", 盖亚.混沌数量)
-		print("龙之镜: ", 盖亚.龙之镜数量)
-		局内操作.点击空白(500)
+		print("盖亚 - 怪兽卡识别完毕")
 	end
+
+	local 下标 = 1
+	::two::
+	local 返回下标 = 识别手牌(量, 下标, 颜色.魔法卡, 相似度.魔法卡)
+	if 返回下标 ~= -1 then
+		局内操作.点击手牌(手牌X,手牌Y)
+		local x,y = 手牌X,手牌Y
+		if 盖亚.征服() then
+			盖亚.征服数量 = 盖亚.征服数量 + 1
+			下标 = 返回下标 + 1
+			goto two
+			return
+		elseif 盖亚.混沌之场() then
+			盖亚.混沌数量 = 盖亚.混沌数量 + 1
+			下标 = 返回下标 + 1
+			goto two
+			return
+		elseif 盖亚.龙之镜() then
+			盖亚.龙之镜数量 = 盖亚.龙之镜数量 + 1
+			下标 = 返回下标 + 1
+			goto two
+			return
+		else
+			下标 = 返回下标 + 1
+			goto two
+			return
+		end
+	else
+		print("盖亚 - 魔法卡识别完毕")
+	end
+
+	print("怪数量: ", 盖亚.怪数量)
+	print("魔道骑士: ", 盖亚.魔道骑士数量)
+	print("诅咒之龙: ", 盖亚.狱炎数量)
+	print("士兵: ", 盖亚.士兵数量)
+	print("本源: ", 盖亚.本源数量)
+	print("征服: ", 盖亚.征服数量)
+	print("混沌场: ", 盖亚.混沌数量)
+	print("龙之镜: ", 盖亚.龙之镜数量)
+	局内操作.点击空白(500)
 end
 
 function 盖亚.召唤魔道骑士()

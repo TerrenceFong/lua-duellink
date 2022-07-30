@@ -1359,6 +1359,7 @@ function 对局.盖亚主要步骤()
 			else
 				print("当前场地卡为：混沌场")
 			end
+
 			if 征服flag == false and 盖亚.征服数量 > 0 then
 				盖亚.使用征服()
 				print("检测手牌 - 使用征服操作后（不一定使用，可能没有）")
@@ -1373,6 +1374,12 @@ function 对局.盖亚主要步骤()
 					print("检测手牌 - 发动完人物技能后")
 					盖亚.检测手牌()
 					if 基本.发动场地() then 场地效果开关 = false end
+				end
+			elseif 征服flag then
+				if 基本.发动场地() then
+					场地效果开关 = false
+					print("检测手牌 - 场地效果发动后")
+					盖亚.检测手牌()
 				end
 			end
 		end
