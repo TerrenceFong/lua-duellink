@@ -8,7 +8,7 @@ PVEarr = jsonLib.decode(动态.读取配置文件内容("PVE配置.txt"))
 标题_1="^作者:青石       QQ:3416918055      群:624844984"
 标题_2="*作者:青石       QQ:3416918055      群:624844984"
 标题_3="~作者:青石       QQ:3416918055      群:624844984"
-local 当前版本 = "0.3.3"
+local 当前版本 = "0.3.5"
 local 最新版本,公告
 local ID = createHUD()
 local function HUD(文字)
@@ -704,7 +704,11 @@ function 提示更新()
 	end
 
 	function 更新()
-		if 0 == downloadFile("http://050400.oss-cn-zhangjiakou.aliyuncs.com/斑驳青石.lr","sdcard/青石/斑驳青石.lr") then
+		function progress(pos)
+			toast("下载进度:"..pos,0,0,30)
+		end 
+
+		if 0 == downloadFile("http://050400.oss-cn-zhangjiakou.aliyuncs.com/斑驳青石.lr","sdcard/青石/斑驳青石.lr", progress) then
 			installLrPkg("sdcard/青石/斑驳青石.lr")
 			HUD("更新成功!重启脚本!")
 			restartScript()

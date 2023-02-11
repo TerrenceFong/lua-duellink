@@ -47,6 +47,8 @@ end)
 对局 = {}
 function  路人()
 	local 翻页次数=0
+	-- 1 2 3 4
+	local 当前页数 = 1
 	if 实况.首次路人开关 and UI_in.路人开关 then
 		print("路人 - 首次清理")
 		实况.首次路人开关 = false
@@ -71,7 +73,11 @@ function  路人()
 			return
 		end
 
-		if 局外检测.主界面() and 局外检测.路人() then
+		if 当前页数 == 5 then
+			当前页数 = 1
+		end
+
+		if 局外检测.主界面() and 局外检测.路人(当前页数) then
 			if 局外检测.对话() then
 				local time = tickCount()
 				while(true) do
@@ -113,6 +119,7 @@ function  路人()
 			局外操作.主界面翻页()
 			翻页次数 = 翻页次数 + 1
 		end
+		当前页数 = 当前页数 + 1
 
 		-- 兜底处理
 		if 局外检测.路人_自动决斗() then

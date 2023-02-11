@@ -151,10 +151,10 @@ function 识别.图灵识字(...)	 -- 标准 :范围数组,字库名,白名单文字,二值化变量,相似
 	return false
 end
 
-function 识别.找字(...)  -- 标准:范围,字库名,文字及颜色数组,相似度,点击判断0/1
+function 识别.找字(...)  -- 标准:范围,字库名,文字及颜色数组,相似度,点击判断 0/1
 	local temp ={...}
 	local 范围 ={}
-	local 字库名,文字,颜色,相似度,是否点击
+	local 字库名,文字,颜色,相似度,点击判断
 	local 返回值 = false
 	if type(temp[1]=="table") and #temp == 5 then
 		范围 = {temp[1][1],temp[1][2],temp[1][3],temp[1][4]}
@@ -175,7 +175,7 @@ function 识别.找字(...)  -- 标准:范围,字库名,文字及颜色数组,相似度,点击判断0/1
 	if x >= 0 then
 		识别X = x
 		识别Y = y
-		if 是否点击 == 1 then
+		if 点击判断 == 1 then
 			tap(x,y)
 			sleep(200)
 		end
